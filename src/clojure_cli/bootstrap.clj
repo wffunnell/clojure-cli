@@ -36,6 +36,10 @@
         ""]
        (string/join \newline)))
 
+(defn error-msg [errors]
+  (str "The following errors occurred while parsing your command:\n\n"
+       (string/join \newline errors)))
+
 (defn exit [status msg]
   (println msg)
   ;(System/exit status)
@@ -45,8 +49,10 @@
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]} (parse-opts args cli-options)]
     ;; Handle help and error conditions
+    (println (parse-opts args cli-options))
     (cond
       (:help options) (exit 0 (usage summary))
+      errors (exit 1 (error-msg errors))
       (= (count arguments) 0) (exit 1 (usage summary))
       (= (first arguments) "count") (tools/count-records-without-images)
       (= (first arguments) "delete") (tools/delete-records-without-images (:max-records options)))))
