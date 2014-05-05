@@ -12,8 +12,6 @@
     :validate [#(< 0 % 0x10000) "Must be a number between 0 and 65536"]]
     ["-H" "--hostname HOST" "Cassandra Remote host"
      :default (InetAddress/getByName "localhost")
-     ;; Specify a string to output in the default column in the options summary
-     ;; if the default value's string representation is very ugly
      :default-desc "localhost"
      :parse-fn #(InetAddress/getByName %)]
     ["-m" "--max-records MAX-RECORDS" "Maximum records to delete from cassandra"
@@ -48,8 +46,6 @@
 
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]} (parse-opts args cli-options)]
-    ;; Handle help and error conditions
-    (println (parse-opts args cli-options))
     (cond
       (:help options) (exit 0 (usage summary))
       errors (exit 1 (error-msg errors))
