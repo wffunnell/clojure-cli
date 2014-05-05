@@ -32,7 +32,7 @@
         ""
         "Actions:"
         "  count    Show number of entries with missing images"
-        "  delete   Delete entries with missing image data, use with -max ${number_to_be_deleted}"
+        "  delete   Delete entries with missing image data, use with --max-records ${number_to_be_deleted}"
         ""]
        (string/join \newline)))
 
@@ -49,4 +49,4 @@
       (:help options) (exit 0 (usage summary))
       (= (count arguments) 0) (exit 1 (usage summary))
       (= (first arguments) "count") (tools/count-records-without-images)
-      (= (first arguments) "delete") (tools/delete-records-without-images 10))))
+      (= (first arguments) "delete") (tools/delete-records-without-images (:max-records options)))))
